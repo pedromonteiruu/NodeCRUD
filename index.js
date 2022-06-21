@@ -8,11 +8,15 @@ con.connect((err)=>{
     console.log('Connection established')
 })
 
-const {UpdateUser, DeleteUser, InsertUser,getById, getAll} = require('./functions')
+const {padrao, UpdateUser, DeleteUser, InsertUser,getById, getAll, UpdateLastName, FullUser, CreateTable} = require('./functions')
+server.get('/', padrao)
 server.get('/allPeople', getAll)
 server.get('/searchByUID/:uid', getById)
 server.post('/insertUser', InsertUser)
 server.delete('/deleteUserById/:id', DeleteUser)
-server.put('/updateUser', UpdateUser)
+server.put('/updateUser', UpdateUser) //To update name
+server.put('/updatelastname', UpdateLastName) // To update last name
+server.put('/updatefull', FullUser)// To update de full user
+server.post('/createTable', CreateTable)
 
-server.listen(port, ()=>{console.log(`Running at 'localhost:${port}'`)})
+server.listen(port, ()=>{console.log(`Running at 'http://localhost:${port}'`)})

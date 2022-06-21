@@ -1,4 +1,8 @@
-const {con, server, port} = require('./connect')
+const {con} = require('./connect')
+
+const padrao = (req, res)=>{
+    res.send('Funções do CRUD : GetAll, GetByID, InsertUser, DeleteUser, UpdateUser, UpdateLastName, FullUser, CreateTable')
+}
 
 const getAll = (req,res)=>{
     con.query('select * from turmaBB', function(err, result, fields){
@@ -18,7 +22,6 @@ const getById = (req,res)=>{
 
 const InsertUser = (req,res)=>{
     const {Name, Phone, Email, LastName, UIdUser} = req.body
-    console.log(req.body)
     con.query(`insert into turmaBB values(${UIdUser}, '${Name}', '${LastName}', '${Email}', '${Phone}')`,
     function(err, result, fields){
         if (err) throw err;
@@ -44,4 +47,39 @@ const UpdateUser =(req, res)=>{
     })
 }
 
-module.exports = {UpdateUser, DeleteUser, InsertUser,getById, getAll}
+const UpdateLastName = (req, res)=>{
+    const {LastName, UIdUser} = req.body
+    con.query(`UPDATE turmaBB Set LastName = '${LastName}' WHERE UIdUser =${UIdUser}`,
+    (err, result, fields)=>{
+        if(err) throw err;
+        res.send('Sucess Update')
+    })
+}
+
+const FullUser = (req, res)=>{
+    const {Name, Phone, Email, LastName, UIdUser} = req.body
+    con.query(`UPDATE turmaBB Set Name='${Name}', 
+               LastName = '${LastName}', 
+               Phone='${Phone}',
+               Email = '${Email}' 
+               WHERE UIdUser =${UIdUser}`,
+    (err, result, fields)=>{
+        if(err) throw err;
+        res.send('Sucess Update')
+    })
+}
+
+const CreateTable = (req, res)=>{
+    con.query(`create table turmaBB(
+        UIdUser int(2),
+        Name varchar(80),
+        LastName varchar(100),
+        Email varchar(100),
+        Phone varchar(9),
+        primary key(UIdUser));`, (err, result, fields)=>{
+            if(err) throw res.send('Table already exists');
+            res.send('Create Table Success!')
+        })
+}
+
+module.exports = {padrao, UpdateUser, DeleteUser, InsertUser,getById, getAll, UpdateLastName, FullUser, CreateTable}

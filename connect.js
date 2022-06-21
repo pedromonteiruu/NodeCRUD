@@ -4,7 +4,7 @@ const express = require('express')
 const server = express()
 server.use(express.json())
 
-const port = 3030
+const port = 8080
 
 
 var con = mysql.createConnection({
